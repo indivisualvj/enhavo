@@ -26,9 +26,6 @@ class MaskedType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'translation_domain' => 'EnhavoAppBundle'
-        ));
         $resolver->setRequired('mask_options');
         $resolver->setAllowedTypes('mask_options', 'array');
     }
