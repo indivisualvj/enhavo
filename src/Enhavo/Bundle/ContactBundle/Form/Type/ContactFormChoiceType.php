@@ -4,45 +4,29 @@
 namespace Enhavo\Bundle\ContactBundle\Form\Type;
 
 
+use Enhavo\Bundle\ContactBundle\Contact\ContactManager;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ContactFormChoiceType extends ChoiceType
+class ContactFormChoiceType extends AbstractType
 {
-    /**
-     * @var array
-     */
-    private $forms;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    public function __construct(array $forms, TranslatorInterface $translator)
+    public function __construct(
+        private readonly ContactManager $contactManager,
+    )
     {
-        parent::__construct();
-        $this->forms = $forms;
-        $this->translator = $translator;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        parent::configureOptions($resolver);
-        $resolver->setDefaults(array(
-            'choices' => $this->getChoices(),
-            'required' => true
-        ));
+        $resolver->setDefaults([
+            'choices' => array_flip($this->contactManager->getChoices()),
+        ]);
     }
 
-    private function getChoices()
+    public function getParent(): string
     {
-        $choices = [];
-        foreach ($this->forms as $key => $form) {
-            $label = $this->translator->trans($form['label'], [], $form['translation_domain']);
-            $choices[$label] = $key;
-        }
-        return $choices;
+        return ChoiceType::class;
     }
 }

@@ -1,6 +1,114 @@
+enhavo_newsletter:
+    newsletter:
+        mail:
+            from: '%env(string:MAILER_FROM)%'
+        templates:
+            default:
+                template: 'mail/newsletter/template/default.html.twig'
+                label: newsletter.label.default
+                translation_domain: EnhavoNewsletterBundle
+
 enhavo_app:
     template_paths:
-        enhavo_contact:
-            path: '@EnhavoContactBundle/Resources/views'
-            alias: EnhavoContact
+        enhavo_newsletter:
+            path: '@EnhavoNewsletterBundle/Resources/views'
+            alias: EnhavoNewsletter
             priority: 10
+    roles:
+        enhavo_newsletter_local_subscriber_index:
+            role: ROLE_ENHAVO_NEWSLETTER_LOCAL_SUBSCRIBER_INDEX
+            label: subscriber.role.label.index
+            translation_domain: EnhavoNewsletterBundle
+        enhavo_newsletter_local_subscriber_create:
+            role: ROLE_ENHAVO_NEWSLETTER_LOCAL_SUBSCRIBER_CREATE
+            label: subscriber.role.label.create
+            translation_domain: EnhavoNewsletterBundle
+        enhavo_newsletter_local_subscriber_update:
+            role: ROLE_ENHAVO_NEWSLETTER_LOCAL_SUBSCRIBER_UPDATE
+            label: subscriber.role.label.update
+            translation_domain: EnhavoNewsletterBundle
+        enhavo_newsletter_local_subscriber_delete:
+            role: ROLE_ENHAVO_NEWSLETTER_LOCAL_SUBSCRIBER_DELETE
+            label: subscriber.role.label.delete
+            translation_domain: EnhavoNewsletterBundle
+
+        enhavo_newsletter_pending_subscriber_index:
+            role: ROLE_ENHAVO_NEWSLETTER_PENDING_SUBSCRIBER_INDEX
+            label: subscriber.role.label.index
+            translation_domain: EnhavoNewsletterBundle
+
+        enhavo_newsletter_group_index:
+            role: ROLE_ENHAVO_NEWSLETTER_GROUP_INDEX
+            label: group.role.label.index
+            translation_domain: EnhavoNewsletterBundle
+        enhavo_newsletter_group_create:
+            role: ROLE_ENHAVO_NEWSLETTER_GROUP_CREATE
+            label: group.role.label.create
+            translation_domain: EnhavoNewsletterBundle
+        enhavo_newsletter_group_update:
+            role: ROLE_ENHAVO_NEWSLETTER_GROUP_UPDATE
+            label: group.role.label.update
+            translation_domain: EnhavoNewsletterBundle
+        enhavo_newsletter_group_delete:
+            role: ROLE_ENHAVO_NEWSLETTER_GROUP_DELETE
+            label: group.role.label.delete
+            translation_domain: EnhavoNewsletterBundle
+
+        enhavo_newsletter_newsletter_index:
+            role: ROLE_ENHAVO_NEWSLETTER_NEWSLETTER_INDEX
+            label: newsletter.role.label.index
+            translation_domain: EnhavoNewsletterBundle
+        enhavo_newsletter_newsletter_create:
+            role: ROLE_ENHAVO_NEWSLETTER_NEWSLETTER_CREATE
+            label: newsletter.role.label.create
+            translation_domain: EnhavoNewsletterBundle
+        enhavo_newsletter_newsletter_update:
+            role: ROLE_ENHAVO_NEWSLETTER_NEWSLETTER_UPDATE
+            label: newsletter.role.label.update
+            translation_domain: EnhavoNewsletterBundle
+        enhavo_newsletter_newsletter_delete:
+            role: ROLE_ENHAVO_NEWSLETTER_NEWSLETTER_DELETE
+            label: newsletter.role.label.delete
+            translation_domain: EnhavoNewsletterBundle
+        enhavo_newsletter_newsletter_send:
+            role: ROLE_ENHAVO_NEWSLETTER_NEWSLETTER_SEND
+            label: newsletter.role.label.send
+            translation_domain: EnhavoNewsletterBundle
+        enhavo_newsletter_newsletter_view:
+            role: ROLE_ENHAVO_NEWSLETTER_NEWSLETTER_VIEW
+            label: newsletter.role.label.view
+            translation_domain: EnhavoNewsletterBundle
+
+enhavo_block:
+    render:
+        sets:
+            newsletter:
+                picture: theme/block/newsletter/picture.html.twig
+                text: theme/block/newsletter/text.html.twig
+                text_picture: theme/block/newsletter/text_picture.html.twig
+                blockquote: theme/block/newsletter/blockquote.html.twig
+
+enhavo_routing:
+    classes:
+        Enhavo\Bundle\NewsletterBundle\Entity\Newsletter:
+            router:
+                default:
+                    type: slug
+                view:
+                    type: id
+                    route: enhavo_newsletter_newsletter_update
+                admin:
+                    type: admin
+                    index_route: enhavo_newsletter_newsletter_index
+                    update_route: enhavo_newsletter_newsletter_update
+            generators:
+                slug:
+                    type: slug
+                    property: subject
+
+doctrine:
+    orm:
+        resolve_target_entities:
+#            Enhavo\Bundle\NewsletterBundle\Model\SubscriberInterface: Enhavo\Bundle\NewsletterBundle\Model\Subscriber
+            Enhavo\Bundle\NewsletterBundle\Model\GroupInterface: Enhavo\Bundle\NewsletterBundle\Entity\Group
+            Enhavo\Bundle\NewsletterBundle\Model\NewsletterInterface: Enhavo\Bundle\NewsletterBundle\Entity\Newsletter

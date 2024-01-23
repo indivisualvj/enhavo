@@ -1,97 +1,125 @@
 <?php
-/**
- * AdminView.php
- *
- * @since 04/08/14
- * @author Gerhard Seidel <gseidel.message@googlemail.com>
- */
 
 namespace Enhavo\Bundle\ContactBundle\Model;
 
 
+use DateTime;
+
 class Contact implements ContactInterface
 {
-    /**
-     * @var string
-     */
-    private $email;
+    private ?int $id = null;
+    private ?string $form = null;
+    private ?DateTime $createdAt = null;
+    private ?string $token = null;
+    private ?string $email;
+    private ?string $firstName;
+    private ?string $lastName;
+    private ?string $message;
 
-    /**
-     * @var string
-     */
-    private $firstName;
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-    /**
-     * @var string
-     */
-    private $lastName;
+    public function getForm(): ?string
+    {
+        return $this->form;
+    }
 
-    /**
-     * @var string
-     */
-    private $message;
+    public function setForm(?string $form): void
+    {
+        $this->form = $form;
+    }
 
-    /**
-     * @return string
-     */
-    public function getEmail()
+    public function getCreatedAt(): ?DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getUpdatedAt(): ?DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?DateTime $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    public function getConfirmed(): ?bool
+    {
+        return $this->confirmed;
+    }
+
+    public function setConfirmed(?bool $confirmed): void
+    {
+        $this->confirmed = $confirmed;
+    }
+
+    public function getFinished(): ?bool
+    {
+        return $this->finished;
+    }
+
+    public function setFinished(?bool $finished): void
+    {
+        $this->finished = $finished;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): void
+    {
+        $this->token = $token;
+    }
+
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     */
-    public function setEmail($email)
+    public function setEmail(?string $email): void
     {
         $this->email = $email;
     }
 
-    /**
-     * @return string
-     */
-    public function getMessage()
-    {
-        return $this->message;
-    }
-
-    /**
-     * @param string $message
-     */
-    public function setMessage($message)
-    {
-        $this->message = $message;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFirstName()
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
-    /**
-     * @param string $firstName
-     */
-    public function setFirstName($firstName)
+    public function setFirstName(?string $firstName): void
     {
         $this->firstName = $firstName;
     }
 
-    /**
-     * @return string
-     */
-    public function getLastName()
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
-    /**
-     * @param string $lastName
-     */
-    public function setLastName($lastName)
+    public function setLastName(?string $lastName): void
     {
         $this->lastName = $lastName;
     }
+
+    public function getMessage(): ?string
+    {
+        return $this->message;
+    }
+
+    public function setMessage(?string $message): void
+    {
+        $this->message = $message;
+    }
+
+
 }

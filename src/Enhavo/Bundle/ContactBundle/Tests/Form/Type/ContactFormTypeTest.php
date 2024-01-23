@@ -8,7 +8,7 @@
 
 namespace Enhavo\Bundle\ContactBundle\Tests\Form\Type;
 
-use Enhavo\Bundle\ContactBundle\Form\Type\ContactFormType;
+use Enhavo\Bundle\ContactBundle\Form\Type\ContactType;
 use Enhavo\Bundle\ContactBundle\Model\Contact;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Form\PreloadedExtension;
@@ -17,7 +17,7 @@ class ContactFormTypeTest extends TypeTestCase
 {
     protected function getExtensions()
     {
-        $type = new ContactFormType(Contact::class);
+        $type = new ContactType(Contact::class);
 
         return [
             new PreloadedExtension([$type], []),
@@ -34,7 +34,7 @@ class ContactFormTypeTest extends TypeTestCase
         ];
 
         $contact = new Contact();
-        $form = $this->factory->create(ContactFormType::class, $contact);
+        $form = $this->factory->create(ContactType::class, $contact);
 
         $form->submit($formData);
         $this->assertTrue($form->isSynchronized());

@@ -1,0 +1,26 @@
+services:
+    Enhavo\Bundle\ContactBundle\Strategy\Type\StrategyType:
+        public: true
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: enhavo_contact.strategy }
+
+    Enhavo\Bundle\ContactBundle\Strategy\Type\NotifyStrategyType:
+        public: true
+        arguments:
+        tags:
+            - { name: enhavo_contact.strategy }
+
+    Enhavo\Bundle\ContactBundle\Strategy\Type\DoubleOptInStrategyType:
+        public: true
+        arguments:
+        tags:
+            - { name: enhavo_contact.strategy }
+
+    Enhavo\Bundle\ContactBundle\Strategy\Type\AcceptStrategyType:
+        public: true
+        arguments:
+            - '@Enhavo\Bundle\ContactBundle\Contact\ContactManager'
+        tags:
+            - { name: enhavo_contact.strategy }

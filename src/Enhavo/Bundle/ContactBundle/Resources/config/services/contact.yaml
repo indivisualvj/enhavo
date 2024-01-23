@@ -1,0 +1,6 @@
+services:
+
+
+    Enhavo\Bundle\ContactBundle\Contact\ContactManager:
+        public: true
+        arguments:

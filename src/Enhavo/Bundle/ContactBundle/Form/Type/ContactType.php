@@ -8,16 +8,16 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ContactFormType extends AbstractType
+class ContactType extends AbstractType
 {
-    protected $dataClass;
 
-    public function __construct($dataClass)
+    public function __construct(
+        private readonly string $dataClass,
+    )
     {
-        $this->dataClass = $dataClass;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('email', TextType::class);
         $builder->add('firstName', TextType::class);
@@ -25,14 +25,14 @@ class ContactFormType extends AbstractType
         $builder->add('message', TextareaType::class);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => $this->dataClass
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'enhavo_contact_contact';
     }

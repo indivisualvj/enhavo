@@ -10,15 +10,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ContactBlockType extends AbstractBlockType
 {
-    public function configureOptions(OptionsResolver $optionsResolver)
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
         $optionsResolver->setDefaults([
             'model' => ContactBlock::class,
             'form' => ContactBlockFormType::class,
             'factory' => ContactBlockFactory::class,
-            'template' => 'EnhavoContactBundle:Theme/Block:contact.html.twig',
-            'label' => 'Contact',
-            'translation_domain' => 'EnhavoContactBundle',
+            'template' => 'theme/block/contact-form.html.twig',
+            'label' => 'contact.label.contact_form',
+            'translation_domain' => 'EnhavoAContactBundle',
             'groups' => ['default', 'content']
         ]);
     }

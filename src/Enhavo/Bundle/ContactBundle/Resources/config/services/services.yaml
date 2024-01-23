@@ -1,0 +1,33 @@
+services:
+
+    Enhavo\Bundle\ContactBundle\Menu\ContactMainMenu:
+        parent: Enhavo\Bundle\AppBundle\Menu\Menu\ListMenu
+        tags:
+            - { name: enhavo.menu, alias: contact }
+
+    Enhavo\Bundle\ContactBundle\Block\SubscribeBlockType:
+        tags:
+            - { name: enhavo_block.block }
+
+    enhavo_contact.factory.subscriber:
+        class: Enhavo\Bundle\AppBundle\Factory\Factory
+        arguments:
+            - 'Enhavo\Bundle\ContactBundle\Model\Subscriber'
+
+    enhavo_contact.factory.local_subscriber:
+        class: Enhavo\Bundle\ContactBundle\Factory\LocalSubscriberFactory
+        arguments:
+            - '%enhavo_contact.model.local_subscriber.class%'
+
+    Enhavo\Bundle\ContactBundle\Controller\SubscriptionController:
+        arguments:
+            - '@Enhavo\Bundle\ContactBundle\Subscription\SubscriptionManager'
+            - '@Enhavo\Bundle\ContactBundle\Pending\PendingSubscriberManager'
+            - '@translator'
+            - '@Enhavo\Bundle\FormBundle\Error\FormErrorResolver'
+            - '@serializer'
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+            - [setTemplateResolver, ['@Enhavo\Bundle\AppBundle\Template\TemplateResolverInterface']]
+        tags:
+            - { name: controller.service_arguments }

@@ -2,6 +2,8 @@
 
 namespace Enhavo\Bundle\ContactBundle\DependencyInjection;
 
+use App\Model\Contact;
+use Enhavo\Bundle\ContactBundle\Form\Type\ContactType;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -15,57 +17,33 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('enhavo_contact');
         $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
+                ->arrayNode('contact')
+                    ->addDefaultsIfNotSet()
+                ->end()
                 ->arrayNode('forms')
-                    ->useAttributeAsKey('name')
                     ->arrayPrototype()
                         ->children()
-                            ->scalarNode('model')->defaultValue('Enhavo\Bundle\ContactBundle\Model\Contact')->end()
-                            ->scalarNode('form')->defaultValue('Enhavo\Bundle\ContactBundle\Form\Type\ContactFormType')->end()
-                            ->arrayNode('form_options')
-                                ->addDefaultsIfNotSet()
-                            ->end()
-                            ->scalarNode('label')->defaultValue('contact.forms.default.label')->end()
-                            ->scalarNode('translation_domain')->defaultValue('EnhavoContactBundle')->end()
-                            ->arrayNode('template')
+                            ->variableNode('type')->end()
+                            ->scalarNode('model')->defaultValue(Contact::class)->end()
+                            ->arrayNode('form')
                                 ->addDefaultsIfNotSet()
                                 ->children()
-                                    ->scalarNode('submit')->defaultValue('theme/contact/default/submit.html.twig')->end()
-                                    ->scalarNode('finish')->defaultValue('theme/contact/default/finish.html.twig')->end()
-                                ->end()
-                            ->end()
-                            ->arrayNode('recipient')
-                                ->addDefaultsIfNotSet()
-                                ->children()
-                                    ->scalarNode('template')->defaultValue('mail/contact/default/recipient.html.twig')->end()
-                                    ->scalarNode('content_type')->defaultValue('text/plain')->end()
-                                    ->scalarNode('from')->end()
-                                    ->scalarNode('sender_name')->end()
-                                    ->scalarNode('subject')->defaultValue('')->end()
-                                    ->scalarNode('to')->end()
-                                ->end()
-                            ->end()
-                            ->arrayNode('confirm')
-                                ->addDefaultsIfNotSet()
-                                ->children()
-                                    ->booleanNode('enable')->defaultValue(true)->end()
-                                    ->scalarNode('template')->defaultValue('mail/contact/default/confirm.html.twig')->end()
-                                    ->scalarNode('content_type')->defaultValue('text/plain')->end()
-                                    ->scalarNode('from')->end()
-                                    ->scalarNode('sender_name')->end()
-                                    ->scalarNode('subject')->defaultValue('')->end()
+                                    ->variableNode('class')->defaultValue(ContactType::class)->end()
+                                    ->variableNode('options')->defaultValue([])->end()
                                 ->end()
                             ->end()
                         ->end()
                     ->end()
                 ->end()
             ->end()
+        ->end()
         ;
 
         return $treeBuilder;
