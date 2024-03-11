@@ -1,15 +1,19 @@
 <?php
+/**
+ * @author blutze-media
+ * @since 2024-01-24
+ */
 
-namespace Enhavo\Bundle\ContactBundle\Strategy\Type;
+namespace Enhavo\Bundle\ContactBundle\Contact\Type;
 
+use Enhavo\Bundle\ContactBundle\Contact\ContactTypeInterface;
 use Enhavo\Bundle\ContactBundle\Event\ContactEvent;
 use Enhavo\Bundle\ContactBundle\Model\ContactInterface;
-use Enhavo\Bundle\ContactBundle\Strategy\StrategyTypeInterface;
 use Enhavo\Component\Type\AbstractType;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class StrategyType extends AbstractType implements StrategyTypeInterface
+class ContactType extends AbstractType implements ContactTypeInterface
 {
     public function __construct(
         private readonly EventDispatcher $eventDispatcher,

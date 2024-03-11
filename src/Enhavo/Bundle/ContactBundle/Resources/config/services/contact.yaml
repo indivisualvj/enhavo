@@ -1,6 +1,9 @@
 services:
-
-
     Enhavo\Bundle\ContactBundle\Contact\ContactManager:
         public: true
         arguments:
+            - '@Enhavo\Component\Type\FactoryInterface[Contact]'
+            - '@Enhavo\Bundle\AppBundle\Resource\ResourceManager'
+            - '@Enhavo\Bundle\ApiBundle\Normalizer\DataNormalizer'
+            - '@Symfony\Component\Form\FormFactoryInterface'
+            - '@Symfony\Component\Routing\RouterInterface'

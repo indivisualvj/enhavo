@@ -1,21 +1,17 @@
 <?php
+/**
+ * @author blutze-media
+ * @since 2024-01-24
+ */
 
-namespace Enhavo\Bundle\ContactBundle\Strategy\Type;
+namespace Enhavo\Bundle\ContactBundle\Contact\Type;
 
-use Enhavo\Bundle\ContactBundle\Contact\ContactManager;
+use Enhavo\Bundle\ContactBundle\Contact\AbstractContactType;
 use Enhavo\Bundle\ContactBundle\Model\ContactInterface;
-use Enhavo\Bundle\ContactBundle\Strategy\AbstractStrategyType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AcceptStrategyType extends AbstractStrategyType
+class NotifyContactType extends AbstractContactType
 {
-    public function __construct(
-        ContactManager $contactManager
-    )
-    {
-    }
-
-
     public function process(ContactInterface $contact, array $options): void
     {
         $this->preProcess($contact);
@@ -29,10 +25,8 @@ class AcceptStrategyType extends AbstractStrategyType
 
         ]);
     }
-
     public static function getName(): ?string
     {
-        return 'accept';
+        return 'notify';
     }
-
 }
