@@ -15,6 +15,21 @@ enhavo_translation:
                 - Enhavo\Bundle\TranslationBundle\Client\UrlTranslationClient
 
 enhavo_app:
+    roles:
+        enhavo_translation_translation_memory_index:
+            role: ROLE_ENHAVO_TRANSLATION_TRANSLATION_MEMORY_INDEX
+            label: translation_memory.role.label.index
+            translation_domain: EnhavoTranslationBundle
+        enhavo_translation_translation_memory_update:
+            role: ROLE_ENHAVO_TRANSLATION_TRANSLATION_MEMORY_UPDATE
+            label: translation_memory.role.label.update
+            translation_domain: EnhavoTranslationBundle
+        enhavo_translation_translation_memory_delete:
+            role: ROLE_ENHAVO_TRANSLATION_TRANSLATION_MEMORY_DELETE
+            label: translation_memory.role.label.delete
+            translation_domain: EnhavoTranslationBundle
+
+enhavo_framework:
     locale_resolver: Enhavo\Bundle\TranslationBundle\Locale\LocalePathResolver
 #    form_themes:
 #      - '@EnhavoTranslation/admin/form/translation/fields.html.twig'

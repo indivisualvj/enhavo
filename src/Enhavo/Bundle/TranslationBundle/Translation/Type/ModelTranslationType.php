@@ -27,44 +27,40 @@ class ModelTranslationType extends AbstractTranslationType
 
     public function translate($object, string $property, string $locale, array $options): void
     {
-
     }
 
     public function detach($object, string $property, string $locale, array $options): void
     {
-
     }
 
     public function delete($object, string $property): void
     {
-
     }
 
     public function setTranslation(array $options, $data, string $property, string $locale, $value)
     {
-
     }
 
     public function getTranslation(array $options, $data, string $property, string $locale)
     {
-
     }
 
     public function getDefaultValue(array $options, $data, string $property)
     {
-
     }
 
     public function autoTranslate($object, string $property, string $locale, mixed $context, array $options): void
     {
+        $runtimeOptions = $this->translationManager->getRuntimeOptions($options);
+
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $value = $propertyAccessor->getValue($object, $property);
         if (is_iterable($value)) {
             foreach ($value as $item) {
-                $this->translationManager->applyAutoTranslation($item, $locale, null, $context);
+                $this->translationManager->applyAutoTranslation($item, $locale, null, $context, $runtimeOptions);
             }
         } elseif (is_object($value)) {
-            $this->translationManager->applyAutoTranslation($value, $locale, null, $context);
+            $this->translationManager->applyAutoTranslation($value, $locale, null, $context, $runtimeOptions);
         }
     }
 
@@ -80,6 +76,5 @@ class ModelTranslationType extends AbstractTranslationType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-
     }
 }

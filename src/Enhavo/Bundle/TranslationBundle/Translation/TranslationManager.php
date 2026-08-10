@@ -25,6 +25,16 @@ use Enhavo\Component\Type\FactoryInterface;
 
 class TranslationManager
 {
+    /** Options an auto translation run can set at runtime, see applyAutoTranslation(). */
+    public const array RUNTIME_OPTIONS = [
+        'overwrite',
+        'use_memory',
+        'memory_only',
+        'ignore_status',
+        'store_only',
+        'usage',
+    ];
+
     private array $translation = [];
 
     /** @var string[] */
@@ -74,12 +84,12 @@ class TranslationManager
     {
         /** @var Metadata $metadata */
         $metadata = $this->metadataRepository->getMetadata($data);
-        if ($metadata === null) {
+        if (null === $metadata) {
             return false;
         }
 
         $propertyNode = $metadata->getProperty($property);
-        if ($propertyNode === null) {
+        if (null === $propertyNode) {
             return false;
         }
 
@@ -286,19 +296,32 @@ class TranslationManager
         return null;
     }
 
-    public function applyAutoTranslation($data, $locale, ?string $property = null, mixed $context = null): void
+    /**
+     * @param mixed $context data handed to the translation client as prompt context, usually the resource itself
+     * @param array $options runtime options, they win over the options of the property node
+     */
+    public function applyAutoTranslation($data, $locale, ?string $property = null, mixed $context = null, array $options = []): void
     {
         /** @var Metadata $metadata */
         $metadata = $this->metadataRepository->getMetadata($data);
         $properties = $metadata->getProperties();
         foreach ($properties as $propertyName => $propertyNode) {
-            if ($property === null || $propertyName === $property) {
+            if (null === $property || $propertyName === $property) {
                 /** @var Translation $translation */
                 $translation = $this->factory->create(array_merge([
                     'type' => $propertyNode->getType(),
                 ], $propertyNode->getOptions()));
-                $translation->autoTranslate($data, $propertyName, $locale, $context);
+                $translation->autoTranslate($data, $propertyName, $locale, $context, $options);
             }
         }
+    }
+
+    /**
+     * Options that are set at runtime and have to reach nested resources as well. Every
+     * other option belongs to a single property node and must not be handed down.
+     */
+    public function getRuntimeOptions(array $options): array
+    {
+        return array_intersect_key($options, array_flip(self::RUNTIME_OPTIONS));
     }
 }

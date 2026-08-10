@@ -26,6 +26,9 @@ batch:
     label: 'Löschen'
     message:
       confirm: 'Wollen sie wirklich alle ausgewählten Elemente löschen?'
+  property:
+    message:
+      confirm: 'Wollen sie wirklich alle ausgewählten Elemente ändern?'
   assign:
     label: 'Zuweisen'
     error:

@@ -42,6 +42,8 @@ class EnhavoTranslationExtension extends Extension implements PrependExtensionIn
         $container->setParameter('enhavo_translation.translation_client.context.provider', $config['translation_client']['context']['provider'] ?? null);
         $container->setParameter('enhavo_translation.translation_client.context.text', $config['translation_client']['context']['text'] ?? null);
         $container->setParameter('enhavo_translation.translation_client.context.files', $config['translation_client']['context']['files'] ?? []);
+        $container->setParameter('enhavo_translation.translation_client.context.locales', $config['translation_client']['context']['locales'] ?? []);
+        $container->setParameter('enhavo_translation.translation_client.memory.enabled', $config['translation_client']['memory']['enabled']);
         $container->setParameter('enhavo_translation.translation_client.deepl.api_key', $config['translation_client']['deepl']['api_key'] ?? null);
         $container->setParameter('enhavo_translation.translation_client.deepl.glossary_id', $config['translation_client']['deepl']['glossary_id'] ?? null);
         $container->setParameter('enhavo_translation.translation_client.claude.api_key', $config['translation_client']['claude']['api_key'] ?? null);
@@ -59,12 +61,14 @@ class EnhavoTranslationExtension extends Extension implements PrependExtensionIn
         $loader->load('services/form.yaml');
         $loader->load('services/metadata.yaml');
         $loader->load('services/general.yaml');
+        $loader->load('services/memory.yaml');
     }
 
     protected function prependFiles(): array
     {
         return [
             __DIR__.'/../Resources/config/app/config.yaml',
+            __DIR__.'/../Resources/config/resources/translation_memory.yaml',
         ];
     }
 }

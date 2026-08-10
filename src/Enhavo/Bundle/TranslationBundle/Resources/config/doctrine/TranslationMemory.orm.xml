@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="Enhavo\Bundle\TranslationBundle\Entity\TranslationMemory" table="translation_memory" repository-class="Enhavo\Bundle\TranslationBundle\Repository\TranslationMemoryRepository">
+        <unique-constraints>
+            <unique-constraint name="UNIQ_MEMORY_HASH" columns="hash" />
+        </unique-constraints>
+
+        <indexes>
+            <index name="IDX_MEMORY_REVIEW" columns="targetLanguage,status" />
+        </indexes>
+
+        <id name="id" type="integer" column="id">
+            <generator />
+        </id>
+
+        <field name="hash" length="32" nullable="true" />
+        <field name="sourceLanguage" length="16" nullable="true" />
+        <field name="targetLanguage" length="16" nullable="true" />
+        <field name="sourceValue" type="text" nullable="true" />
+        <field name="targetValue" type="text" nullable="true" />
+        <field name="html" type="boolean" />
+        <field name="status" length="20" nullable="true" />
+        <field name="comment" type="text" nullable="true" />
+        <field name="sourceLength" type="integer" nullable="true" />
+        <field name="usages" type="text" nullable="true" />
+        <field name="createdAt" type="datetime" nullable="true" />
+        <field name="updatedAt" type="datetime" nullable="true" />
+    </entity>
+</doctrine-mapping>

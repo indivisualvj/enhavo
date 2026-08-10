@@ -1,0 +1,150 @@
+enhavo_resource:
+    resources:
+        enhavo_translation.translation_memory:
+            classes:
+                model: Enhavo\Bundle\TranslationBundle\Entity\TranslationMemory
+                factory: Enhavo\Bundle\ResourceBundle\Factory\Factory
+                repository: Enhavo\Bundle\TranslationBundle\Repository\TranslationMemoryRepository
+
+    grids:
+        enhavo_translation.translation_memory:
+            extends: enhavo_resource.grid
+            resource: enhavo_translation.translation_memory
+            actions: {  }
+            filters:
+                status:
+                    type: option
+                    property: status
+                    label: form.label.status
+                    translation_domain: EnhavoTranslationBundle
+                    options:
+                        open: form.label.status_open
+                        reviewed: form.label.status_reviewed
+                        feedback: form.label.status_feedback
+                    initial_active: true
+                targetLanguage:
+                    type: text
+                    property: targetLanguage
+                    label: form.label.target_language
+                    translation_domain: EnhavoTranslationBundle
+                    initial_active: true
+                sourceValue:
+                    type: text
+                    property: sourceValue
+                    label: form.label.source_value
+                    translation_domain: EnhavoTranslationBundle
+                    initial_active: true
+                targetValue:
+                    type: text
+                    property: targetValue
+                    label: form.label.target_value
+                    translation_domain: EnhavoTranslationBundle
+                    initial_active: true
+                sourceLength:
+                    type: between
+                    property: sourceLength
+                    label: form.label.source_length
+                    translation_domain: EnhavoTranslationBundle
+                usages:
+                    type: text
+                    property: usages
+                    label: form.label.usages
+                    translation_domain: EnhavoTranslationBundle
+            columns:
+                status:
+                    type: text
+                    property: status
+                    label: form.label.status
+                    translation_domain: EnhavoTranslationBundle
+                    width: 1
+                    sortable: true
+                targetLanguage:
+                    type: text
+                    property: targetLanguage
+                    label: form.label.target_language
+                    translation_domain: EnhavoTranslationBundle
+                    width: 1
+                    sortable: true
+                sourceValue:
+                    type: text
+                    property: sourceValue
+                    label: form.label.source_value
+                    translation_domain: EnhavoTranslationBundle
+                    width: 4
+                    wrap: false
+                    strip_tags: true
+                    sortable: true
+                targetValue:
+                    type: text
+                    property: targetValue
+                    label: form.label.target_value
+                    translation_domain: EnhavoTranslationBundle
+                    width: 4
+                    wrap: false
+                    strip_tags: true
+                    sortable: true
+                usageCount:
+                    type: text
+                    property: usageCount
+                    label: form.label.usage_count
+                    translation_domain: EnhavoTranslationBundle
+                    width: 1
+                updatedAt:
+                    type: datetime
+                    property: updatedAt
+                    label: form.label.updated_at
+                    translation_domain: EnhavoTranslationBundle
+                    width: 1
+                    sortable: true
+            batches:
+                delete:
+                    type: delete
+                    permission: ROLE_ENHAVO_TRANSLATION_TRANSLATION_MEMORY_DELETE
+                suggest_translation:
+                    type: suggest_translation
+                    permission: ROLE_ENHAVO_TRANSLATION_TRANSLATION_MEMORY_UPDATE
+                reviewed:
+                    type: property
+                    property: status
+                    value: reviewed
+                    label: batch.label.mark_reviewed
+                    translation_domain: EnhavoTranslationBundle
+                    permission: ROLE_ENHAVO_TRANSLATION_TRANSLATION_MEMORY_UPDATE
+                feedback:
+                    type: property
+                    property: status
+                    value: feedback
+                    label: batch.label.mark_feedback
+                    translation_domain: EnhavoTranslationBundle
+                    permission: ROLE_ENHAVO_TRANSLATION_TRANSLATION_MEMORY_UPDATE
+                open:
+                    type: property
+                    property: status
+                    value: open
+                    label: batch.label.mark_open
+                    translation_domain: EnhavoTranslationBundle
+                    permission: ROLE_ENHAVO_TRANSLATION_TRANSLATION_MEMORY_UPDATE
+
+    inputs:
+        enhavo_translation.translation_memory:
+            extends: enhavo_resource.input
+            resource: enhavo_translation.translation_memory
+            form: Enhavo\Bundle\TranslationBundle\Form\Type\TranslationMemoryType
+            actions:
+                suggest_translation:
+                    type: suggest_translation
+                    route: enhavo_translation_admin_api_translation_memory_suggest_translation
+                push_translation:
+                    type: push_translation
+                    route: enhavo_translation_admin_api_translation_memory_push_translation
+            tabs:
+                main:
+                    label: false
+                    type: form
+                    arrangement: |
+                        sourceLanguage
+                        status | targetLanguage
+                        comment
+                        sourceValue
+                        targetValue
+                        usages

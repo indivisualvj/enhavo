@@ -10,6 +10,12 @@ services:
         tags:
             - { name: enhavo_resource.batch }
 
+    Enhavo\Bundle\ResourceBundle\Batch\Type\PropertyBatchType:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: enhavo_resource.batch }
+
     Enhavo\Bundle\ResourceBundle\Batch\Type\AssignBatchType:
         arguments:
             - '@form.factory'

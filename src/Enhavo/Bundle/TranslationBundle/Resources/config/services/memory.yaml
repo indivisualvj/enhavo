@@ -1,0 +1,85 @@
+services:
+    Enhavo\Bundle\TranslationBundle\Memory\TranslationMemoryNormalizer:
+        arguments:
+            - '@Enhavo\Bundle\FormBundle\Formatter\HtmlSanitizer'
+            - '%enhavo_form.html_sanitizer.config%'
+
+    Enhavo\Bundle\TranslationBundle\Memory\TranslationMemoryManager:
+        arguments:
+            - '@enhavo_translation.translation_memory.repository'
+            - '@enhavo_translation.translation_memory.factory'
+            - '@Enhavo\Bundle\ResourceBundle\Resource\ResourceManager'
+            - '@doctrine.orm.entity_manager'
+            - '@Enhavo\Bundle\TranslationBundle\Memory\TranslationMemoryNormalizer'
+
+    # The inner client is set by the MemoryTranslationClientCompilerPass, so the memory
+    # can be put in front of whatever "translation_client.client" points to.
+    Enhavo\Bundle\TranslationBundle\Client\MemoryTranslationClient:
+        arguments:
+            - ~
+            - '@Enhavo\Bundle\TranslationBundle\Memory\TranslationMemoryManager'
+
+    Enhavo\Bundle\TranslationBundle\Form\Type\TranslationMemoryType:
+        arguments:
+            - '%enhavo_translation.translation_memory.model.class%'
+            - '@Enhavo\Bundle\TranslationBundle\Translation\TranslationManager'
+        tags:
+            - { name: form.type }
+
+    Enhavo\Bundle\TranslationBundle\Memory\TranslationSuggester:
+        arguments:
+            - '@Enhavo\Bundle\TranslationBundle\Client\TranslationClientInterface'
+
+    Enhavo\Bundle\TranslationBundle\Batch\Type\SuggestTranslationBatchType:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@Enhavo\Bundle\TranslationBundle\Memory\TranslationSuggester'
+        tags:
+            - { name: enhavo_resource.batch }
+
+    Enhavo\Bundle\TranslationBundle\Action\PushTranslationActionType:
+        tags:
+            - { name: enhavo_resource.action }
+
+    Enhavo\Bundle\TranslationBundle\Action\SuggestTranslationActionType:
+        tags:
+            - { name: enhavo_resource.action }
+
+    Enhavo\Bundle\TranslationBundle\Endpoint\Type\PushTranslationEndpointType:
+        arguments:
+            - '@Enhavo\Bundle\ResourceBundle\Input\InputFactory'
+            - '@Enhavo\Bundle\ResourceBundle\Resource\ResourceManager'
+            - '@Enhavo\Bundle\ResourceBundle\RouteResolver\RouteResolverInterface'
+            - '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+            - '@Enhavo\Bundle\ResourceBundle\Form\FormErrorNormalizer'
+            - '@Enhavo\Bundle\TranslationBundle\Memory\TranslationMemoryManager'
+        calls:
+            - [ setContainer, [ '@Psr\Container\ContainerInterface' ] ]
+        tags:
+            - { name: enhavo_api.endpoint }
+            - { name: container.service_subscriber }
+
+    Enhavo\Bundle\TranslationBundle\Endpoint\Type\SuggestTranslationEndpointType:
+        arguments:
+            - '@Enhavo\Bundle\ResourceBundle\Input\InputFactory'
+            - '@Enhavo\Bundle\ResourceBundle\Resource\ResourceManager'
+            - '@Enhavo\Bundle\ResourceBundle\RouteResolver\RouteResolverInterface'
+            - '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+            - '@Enhavo\Bundle\ResourceBundle\Form\FormErrorNormalizer'
+            - '@Enhavo\Bundle\TranslationBundle\Memory\TranslationSuggester'
+        calls:
+            - [ setContainer, [ '@Psr\Container\ContainerInterface' ] ]
+        tags:
+            - { name: enhavo_api.endpoint }
+            - { name: container.service_subscriber }
+
+    Enhavo\Bundle\TranslationBundle\Menu\TranslationMemoryMenu:
+        tags:
+            - { name: enhavo_app.menu }
+
+    Enhavo\Bundle\TranslationBundle\EventListener\TranslationMemoryListener:
+        arguments:
+            - '@Enhavo\Bundle\TranslationBundle\Memory\TranslationMemoryNormalizer'
+        tags:
+            - { name: doctrine.event_listener, event: prePersist, method: prePersist }
+            - { name: doctrine.event_listener, event: onFlush, method: onFlush }

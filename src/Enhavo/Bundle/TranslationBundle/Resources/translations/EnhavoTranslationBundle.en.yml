@@ -1,3 +1,46 @@
 action:
   label:
     translate: Translate
+    re_translate: Re-translate
+    push_translation: Push translation
+    suggest_translation: Suggest translation
+    yes: 'Yes'
+    no: 'No'
+  message:
+    re_translate_confirm: Do you really want to overwrite all existing translations?
+    push_translation_confirm: Do you really want to apply this translation to all records that use the same source text?
+    suggest_translation_confirm: Do you really want to overwrite this translation with a proposal from the translation client?
+
+batch:
+  label:
+    mark_reviewed: Mark as reviewed
+    mark_feedback: Mark as feedback
+    mark_open: Mark as open
+  suggest_translation:
+    label: Suggest translation
+    message:
+      confirm: Do you really want to overwrite the selected translations with proposals from the translation client?
+
+form:
+  label:
+    status: Status
+    status_open: Open
+    status_reviewed: Reviewed
+    status_feedback: Feedback
+    comment: Comment
+    target_language: Target language
+    source_value: Source text
+    target_value: Translation
+    source_length: Source length
+    usages: Used in
+    usage_count: Usages
+    updated_at: Updated
+
+translation_memory:
+  label:
+    translation_memory: Translation memory
+  role:
+    label:
+      index: Translation memory index
+      update: Translation memory update
+      delete: Translation memory delete

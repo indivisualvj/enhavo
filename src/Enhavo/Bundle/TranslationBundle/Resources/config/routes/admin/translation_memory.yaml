@@ -1,0 +1,23 @@
+enhavo_translation_admin_translation_memory_index:
+    path: /translation-memory/index
+    defaults:
+        _expose: admin
+        _vue:
+            component: resource-index
+            groups: admin
+            meta:
+                api: enhavo_translation_admin_api_translation_memory_index
+        _endpoint:
+            type: admin
+
+enhavo_translation_admin_translation_memory_update:
+    path: '/translation-memory/update/{id}'
+    defaults:
+        _expose: admin
+        _vue:
+            component: resource-input
+            groups: admin
+            meta:
+                api: enhavo_translation_admin_api_translation_memory_update
+        _endpoint:
+            type: admin

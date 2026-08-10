@@ -11,6 +11,18 @@ export class SaveAction extends AbstractAction
 {
     public url: string;
 
+    /**
+     * Morphing the form after save keeps the scroll position, but it also resets the
+     * state of tree like forms. Named morphOnSave, because morph() is the method the
+     * action manager uses to update the action itself.
+     */
+    public morphOnSave: boolean = true;
+
+    public confirm: boolean = false;
+    public confirmMessage: string;
+    public confirmLabelOk: string;
+    public confirmLabelCancel: string;
+
     constructor(
         private readonly frameManager: FrameManager,
         private readonly uiManager: UiManager,
@@ -24,9 +36,26 @@ export class SaveAction extends AbstractAction
 
     async execute(): Promise<void>
     {
+        if (this.confirm) {
+            const accept = await this.uiManager.confirm({
+                message: this.confirmMessage,
+                denyLabel: this.confirmLabelCancel,
+                acceptLabel: this.confirmLabelOk,
+            });
+
+            if (!accept) {
+                return;
+            }
+        }
+
+        await this.save();
+    }
+
+    private async save(): Promise<void>
+    {
         this.uiManager.loading(true);
 
-        const transport = await this.resourceInputManager.save(this.url, true);
+        const transport = await this.resourceInputManager.save(this.url, this.morphOnSave);
         this.uiManager.loading(false);
 
         if (!transport.ok || !transport.response.ok) {
@@ -44,5 +73,10 @@ export class SaveAction extends AbstractAction
     morph(source: SaveAction)
     {
         this.url = source.url;
+        this.morphOnSave = source.morphOnSave;
+        this.confirm = source.confirm;
+        this.confirmMessage = source.confirmMessage;
+        this.confirmLabelOk = source.confirmLabelOk;
+        this.confirmLabelCancel = source.confirmLabelCancel;
     }
 }

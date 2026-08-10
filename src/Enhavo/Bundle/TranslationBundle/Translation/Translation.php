@@ -49,9 +49,12 @@ class Translation extends AbstractContainerType
         $this->type->delete($data, $property);
     }
 
-    public function autoTranslate($object, string $property, string $locale, mixed $context = null): void
+    /**
+     * @param array $options runtime options, they win over the options of the property node
+     */
+    public function autoTranslate($object, string $property, string $locale, mixed $context = null, array $options = []): void
     {
-        $this->type->autoTranslate($object, $property, $locale, $context, $this->options);
+        $this->type->autoTranslate($object, $property, $locale, $context, array_merge($this->options, $options));
     }
 
     public function isFormTranslatable($object, string $property): bool

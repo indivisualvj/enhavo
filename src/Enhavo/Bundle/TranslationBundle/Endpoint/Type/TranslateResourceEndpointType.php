@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the enhavo package.
+ *
+ * (c) WE ARE INDEED GmbH
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Enhavo\Bundle\TranslationBundle\Endpoint\Type;
 
 use Enhavo\Bundle\ApiBundle\Data\Data;
@@ -8,6 +17,7 @@ use Enhavo\Bundle\ApiBundle\Endpoint\Context;
 use Enhavo\Bundle\ResourceBundle\Authorization\Permission;
 use Enhavo\Bundle\ResourceBundle\Resource\ResourceManager;
 use Enhavo\Bundle\ResourceBundle\RouteResolver\RouteResolverInterface;
+use Enhavo\Bundle\TranslationBundle\Model\TranslationLocalesAwareInterface;
 use Enhavo\Bundle\TranslationBundle\Translation\TranslationManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,8 +31,7 @@ class TranslateResourceEndpointType extends AbstractEndpointType
         private readonly RouteResolverInterface $routeResolver,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly TranslationManager $translationManager,
-    )
-    {
+    ) {
     }
 
     public function handleRequest($options, Request $request, Data $data, Context $context): void
@@ -33,12 +42,14 @@ class TranslateResourceEndpointType extends AbstractEndpointType
         $id = intval($request->get('id'));
         if (!$id) {
             $context->setStatusCode(404);
+
             return;
         }
 
         $resource = $repository->find($id);
-        if ($resource === null) {
+        if (null === $resource) {
             $context->setStatusCode(404);
+
             return;
         }
 
@@ -46,11 +57,21 @@ class TranslateResourceEndpointType extends AbstractEndpointType
             $this->denyAccessUnlessGranted(new Permission($metadata->getName(), $options['permission']), $resource);
         }
 
-        foreach ($this->translationManager->getLocales() as $locale) {
+        $runtimeOptions = [
+            'overwrite' => $options['overwrite'],
+            'use_memory' => $options['use_memory'],
+            'memory_only' => $options['memory_only'],
+            'ignore_status' => $options['ignore_status'],
+            'usage' => sprintf('%s:%s', $metadata->getName(), $id),
+        ];
+
+        foreach ($this->getLocales($resource) as $locale) {
             if ($this->translationManager->getDefaultLocale() === $locale) {
                 continue;
             }
-            $this->translationManager->applyAutoTranslation($resource, $locale, null, $resource);
+
+            // The resource stays the prompt context, the run is steered over the options.
+            $this->translationManager->applyAutoTranslation($resource, $locale, null, $resource, $runtimeOptions);
         }
 
         $this->resourceManager->save($resource);
@@ -60,7 +81,22 @@ class TranslateResourceEndpointType extends AbstractEndpointType
         $context->setResponse(new RedirectResponse($url));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * Translating into a locale a resource is not published in is paid waste, so a
+     * resource may narrow the set of locales down.
+     *
+     * @return string[]
+     */
+    private function getLocales(object $resource): array
+    {
+        if ($resource instanceof TranslationLocalesAwareInterface) {
+            return $resource->getTranslationLocales();
+        }
+
+        return $this->translationManager->getLocales();
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired([
             'resource',
@@ -69,7 +105,16 @@ class TranslateResourceEndpointType extends AbstractEndpointType
         $resolver->setDefaults([
             'permission' => null,
             'update_route' => null,
+            'overwrite' => false,
+            'use_memory' => true,
+            'memory_only' => false,
+            'ignore_status' => true,
         ]);
+
+        $resolver->setAllowedTypes('overwrite', 'bool');
+        $resolver->setAllowedTypes('use_memory', 'bool');
+        $resolver->setAllowedTypes('memory_only', 'bool');
+        $resolver->setAllowedTypes('ignore_status', 'bool');
     }
 
     public static function getName(): ?string

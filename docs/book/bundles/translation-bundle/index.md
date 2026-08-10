@@ -2,4 +2,11 @@
 
 
 <!--@include: ./installation.md -->
+<!--@include: ./introduction.md -->
+<!--@include: ./metadata.md -->
+<!--@include: ./form.md -->
+<!--@include: ./serialization.md -->
+<!--@include: ./routing.md -->
+<!--@include: ./auto-translation.md -->
+<!--@include: ./translation-memory.md -->
 <!--@include: ./architecture.md -->
