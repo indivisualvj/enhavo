@@ -36,7 +36,7 @@ services:
             - '%enhavo_translation.translation_client.claude.model%'
             - '%enhavo_translation.translation_client.claude.timeout%'
             - '%enhavo_translation.translation_client.claude.max_tokens%'
-            -
+
     Enhavo\Bundle\TranslationBundle\Client\DeeplTranslationClient:
         arguments:
             - '@http_client'
@@ -71,6 +71,7 @@ services:
         arguments:
             - '%enhavo_translation.translation_client.context.text%'
             - '%enhavo_translation.translation_client.context.files%'
+            - '%enhavo_translation.translation_client.context.locales%'
             - '%kernel.project_dir%'
             - '@enhavo_media.file.factory'
 

@@ -26,6 +26,9 @@ batch:
     label: 'Delete'
     message:
       confirm: 'Do you really want to delete all selected items?'
+  property:
+    message:
+      confirm: 'Do you really want to update all selected items?'
   assign:
       label: 'Assign'
       error:

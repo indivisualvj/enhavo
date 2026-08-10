@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the enhavo package.
+ *
+ * (c) WE ARE INDEED GmbH
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Enhavo\Bundle\TranslationBundle\Client;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,8 +22,7 @@ class DeeplTranslationClient implements TranslationClientInterface
         private readonly ContextProviderInterface $contextProvider,
         private readonly ?string $apiKey,
         private readonly ?string $glossaryId = null,
-    )
-    {
+    ) {
     }
 
     public function translate(string $text, string $sourceLanguage, string $targetLanguage, array $options = []): ?string
@@ -41,11 +49,11 @@ class DeeplTranslationClient implements TranslationClientInterface
             $context[] = sprintf('Context: %s.', $this->contextNormalizer->getText($options['context'], $options['context_groups']));
         }
 
-        if ($this->contextProvider->getText()) {
-            $context[] = $this->contextProvider->getText();
+        if ($this->contextProvider->getText($targetLanguage)) {
+            $context[] = $this->contextProvider->getText($targetLanguage);
         }
 
-        foreach ($this->contextProvider->getFiles() as $file) {
+        foreach ($this->contextProvider->getFiles($targetLanguage) as $file) {
             $context[] = sprintf('A document "%s" with content: %s', $file->getBasename(), $file->getContent()->getContent());
         }
 
@@ -55,10 +63,10 @@ class DeeplTranslationClient implements TranslationClientInterface
 
         $response = $this->client->request('POST', 'https://api.deepl.com/v2/translate', [
             'headers' => [
-                'Authorization' => 'DeepL-Auth-Key ' . $this->apiKey,
+                'Authorization' => 'DeepL-Auth-Key '.$this->apiKey,
             ],
             'body' => $parameters,
-            'timeout' => 3.5
+            'timeout' => 3.5,
         ]);
 
         $value = $response->toArray()['translations'][0]['text'];
@@ -76,6 +84,7 @@ class DeeplTranslationClient implements TranslationClientInterface
             'context' => null,
             'context_groups' => [],
         ]);
+
         return $resolver->resolve($options);
     }
 }

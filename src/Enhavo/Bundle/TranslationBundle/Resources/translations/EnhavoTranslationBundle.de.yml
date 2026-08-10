@@ -1,3 +1,46 @@
 action:
   label:
     translate: Übersetzen
+    re_translate: Neu übersetzen
+    push_translation: Übersetzung übertragen
+    suggest_translation: Übersetzung vorschlagen
+    yes: 'Ja'
+    no: 'Nein'
+  message:
+    re_translate_confirm: Sollen wirklich alle vorhandenen Übersetzungen überschrieben werden?
+    push_translation_confirm: Soll diese Übersetzung wirklich auf alle Datensätze mit demselben Quelltext übertragen werden?
+    suggest_translation_confirm: Soll diese Übersetzung wirklich durch einen Vorschlag des Übersetzungsdienstes überschrieben werden?
+
+batch:
+  label:
+    mark_reviewed: Als geprüft markieren
+    mark_feedback: Als Rückfrage markieren
+    mark_open: Als offen markieren
+  suggest_translation:
+    label: Übersetzung vorschlagen
+    message:
+      confirm: Sollen die ausgewählten Übersetzungen wirklich mit Vorschlägen des Übersetzungsdienstes überschrieben werden?
+
+form:
+  label:
+    status: Status
+    status_open: Offen
+    status_reviewed: Geprüft
+    status_feedback: Rückfrage
+    comment: Kommentar
+    target_language: Zielsprache
+    source_value: Quelltext
+    target_value: Übersetzung
+    source_length: Länge Quelltext
+    usages: Verwendet in
+    usage_count: Verwendungen
+    updated_at: Geändert
+
+translation_memory:
+  label:
+    translation_memory: Übersetzungsspeicher
+  role:
+    label:
+      index: Übersetzungsspeicher Übersicht
+      update: Übersetzungsspeicher bearbeiten
+      delete: Übersetzungsspeicher löschen

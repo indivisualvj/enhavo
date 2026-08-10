@@ -65,19 +65,39 @@ class TextTranslationType extends AbstractTranslationType
         if (!$options['allow_auto_translate']) {
             return;
         }
+
         $value = $this->propertyAccessor->getValue($object, $property);
-        $translatedValue = $this->translator->getTranslation($object, $property, $locale);
-
-        $isEmpty = $options['html'] ? empty(strip_tags($translatedValue)) : empty($translatedValue);
-        if ($value && $isEmpty || $options['overwrite']) {
-            $translatedValue = $this->translationClient->translate($value, $this->defaultLanguage, $locale, [
-                'html' => $options['html'],
-                'context' => $context,
-                'context_groups' => $options['context_groups'],
-            ]);
-
-            $this->translator->setTranslation($object, $property, $locale, $translatedValue);
+        if (empty($value)) {
+            return;
         }
+
+        $translatedValue = $this->translator->getTranslation($object, $property, $locale);
+        $isEmpty = $options['html'] ? empty(strip_tags($translatedValue)) : empty($translatedValue);
+
+        if (!$isEmpty && !$options['overwrite']) {
+            return;
+        }
+
+        $translatedValue = $this->translationClient->translate($value, $this->defaultLanguage, $locale, [
+            'html' => $options['html'],
+            'context' => $context,
+            'context_groups' => $options['context_groups'],
+            'overwrite' => $options['overwrite'],
+            'use_memory' => $options['use_memory'],
+            'memory_only' => $options['memory_only'],
+            'ignore_status' => $options['ignore_status'],
+            'store_only' => $options['store_only'],
+            'usage' => null === $options['usage'] ? null : sprintf('%s[%s]', $options['usage'], $property),
+        ]);
+
+        // A client returns null when it could not translate, was rate limited or only
+        // collected the text. Writing that would destroy an existing, possibly reviewed,
+        // translation.
+        if (empty($translatedValue)) {
+            return;
+        }
+
+        $this->translator->setTranslation($object, $property, $locale, $translatedValue);
     }
 
     public static function getName(): ?string
@@ -91,8 +111,15 @@ class TextTranslationType extends AbstractTranslationType
             'allow_fallback' => false,
             'allow_auto_translate' => true,
             'html' => false,
-            'overwrite' => false,
             'context_groups' => ['endpoint', 'translation_context'],
+            // Can be set per property node and overwritten at runtime, see
+            // TranslationManager::applyAutoTranslation() and MemoryTranslationClient.
+            'overwrite' => false,
+            'use_memory' => true,
+            'memory_only' => false,
+            'ignore_status' => true,
+            'store_only' => false,
+            'usage' => null,
         ]);
     }
 }

@@ -1,0 +1,69 @@
+enhavo_translation_admin_api_translation_memory_index:
+    path: /translation-memory/index
+    methods: [GET]
+    defaults:
+        _expose: admin_api
+        _describe: admin
+        _endpoint:
+            type: resource_index
+            grid: enhavo_translation.translation_memory
+
+enhavo_translation_admin_api_translation_memory_list:
+    path: /translation-memory/list
+    methods: [GET, POST]
+    defaults:
+        _expose: admin_api
+        _describe: admin
+        _endpoint:
+            type: resource_list
+            grid: enhavo_translation.translation_memory
+
+enhavo_translation_admin_api_translation_memory_update:
+    path: '/translation-memory/update/{id}'
+    methods: [GET, POST]
+    defaults:
+        _expose: admin_api
+        _describe: admin
+        _endpoint:
+            type: resource_update
+            input: enhavo_translation.translation_memory
+
+enhavo_translation_admin_api_translation_memory_delete:
+    path: '/translation-memory/delete/{id}'
+    methods: [DELETE, POST]
+    defaults:
+        _expose: admin_api
+        _describe: admin
+        _endpoint:
+            type: resource_delete
+            input: enhavo_translation.translation_memory
+
+enhavo_translation_admin_api_translation_memory_batch:
+    path: /translation-memory/batch
+    methods: [POST]
+    defaults:
+        _expose: admin_api
+        _describe: admin
+        _endpoint:
+            type: resource_batch
+            grid: enhavo_translation.translation_memory
+
+enhavo_translation_admin_api_translation_memory_push_translation:
+    path: '/translation-memory/push-translation/{id}'
+    methods: [GET, POST]
+    defaults:
+        _expose: admin_api
+        _describe: admin
+        _endpoint:
+            type: push_translation
+            input: enhavo_translation.translation_memory
+
+enhavo_translation_admin_api_translation_memory_suggest_translation:
+    path: '/translation-memory/suggest-translation/{id}'
+    methods: [GET, POST]
+    defaults:
+        _expose: admin_api
+        _describe: admin
+        _endpoint:
+            type: suggest_translation
+            input: enhavo_translation.translation_memory

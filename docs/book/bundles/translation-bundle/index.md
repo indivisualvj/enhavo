@@ -8,3 +8,4 @@
 <!--@include: ./serialization.md -->
 <!--@include: ./routing.md -->
 <!--@include: ./auto-translation.md -->
+<!--@include: ./translation-memory.md -->

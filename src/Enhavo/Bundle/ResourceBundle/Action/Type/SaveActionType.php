@@ -44,6 +44,9 @@ class SaveActionType extends AbstractActionType
         }
 
         $data->set('url', $url);
+        // Not called "morph", because the action models already carry a morph() method
+        // that the action manager uses to update them in place.
+        $data->set('morphOnSave', $options['morph']);
     }
 
     private function getUrl(string $route, array $routeParameters = [], ?object $resource = null): string
@@ -67,7 +70,12 @@ class SaveActionType extends AbstractActionType
             'route_parameters' => [],
             'model' => 'SaveAction',
             'permission' => 'expr:permission(resource, "create")',
+            // Morphing the form after save keeps the scroll position, but it also resets
+            // the state of tree like forms, e.g. a navigation.
+            'morph' => true,
         ]);
+
+        $resolver->setAllowedTypes('morph', 'bool');
     }
 
     public static function getName(): ?string

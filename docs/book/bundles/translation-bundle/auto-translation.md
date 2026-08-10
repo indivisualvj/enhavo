@@ -19,6 +19,8 @@ enhavo_translation:
             files:
                 - 'translations/context.txt'
         client: Enhavo\Bundle\TranslationBundle\Client\DeeplTranslationClient
+        memory:
+            enabled: true
         deepl:
             api_key: '%env(DEEPL_API_KEY)%'
             glossary_id: 'your-glossary-id'
@@ -35,6 +37,25 @@ enhavo_translation:
             domains:
                 - 'example.com'
 ```
+
+Terminology and style guidelines can differ per target locale. Everything under `locales`
+is added to the global `text` and `files` when translating into that locale.
+
+```yaml
+enhavo_translation:
+    translation_client:
+        context:
+            files:
+                - 'translations/glossary.csv'
+            locales:
+                de:
+                    text: 'Address the reader with "Sie".'
+                    files:
+                        - 'translations/guidelines.de.md'
+```
+
+With `memory.enabled` the [translation memory](#translation-memory) is put in front of
+the configured client, so no text is translated and paid for twice.
 
 
 ### Endpoint and Action
