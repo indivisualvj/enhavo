@@ -10,7 +10,11 @@ enhavo_resource:
         enhavo_translation.translation_memory:
             extends: enhavo_resource.grid
             resource: enhavo_translation.translation_memory
-            actions: {  }
+            actions:
+                create:
+                    type: create
+                    permission: 'expr:permission("enhavo_translation.translation_memory", "create")'
+                    route: 'expr:resolve_route("create", {api: false})'
             filters:
                 status:
                     type: option
